@@ -1,0 +1,106 @@
+---
+interface Item { titulo: string; href?: string }
+
+const serviciosGenerales: Item[] = [
+  { titulo: "Derecho Civil", href: "/servicios/derecho-civil" },
+  { titulo: "Derecho Inmobiliario", href: "/servicios/derecho-inmobiliario" },
+  { titulo: "Derecho Sucesorio", href: "/servicios/derecho-sucesorio" },
+  { titulo: "Derecho Migratorio", href: "/servicios/derecho-migratorio" },
+  { titulo: "Derecho de Familia", href: "/servicios/derecho-familia" },
+  { titulo: "Derecho Laboral", href: "/servicios/derecho-laboral" },
+  { titulo: "Derecho Comercial", href: "/servicios/derecho-comercial" },
+  { titulo: "Ciudadanías y Visas", href: "/servicios/derecho-ciudadania-visas" },
+  { titulo: "Mediaciones", href: "/servicios/mediaciones" },
+  { titulo: "Audiencias", href: "/servicios/audiencias" },
+  { titulo: "Convenio o Acuerdos", href: "/servicios/convenio-acuerdos" },
+  { titulo: "Análisis y Vistas de Expedientes", href: "/servicios/analisis-vistas" },
+];
+
+const serviciosEspecializados: Item[] = [
+  { titulo: "Boletos de Compraventa (Seña y Reserva)", href: "/servicios/boletos-compraventa" },
+  { titulo: "Escritura Pública", href: "/servicios/escritura-publica" },
+  { titulo: "Cesión de Derechos", href: "/servicios/cesion-derechos" },
+  { titulo: "Usucapión", href: "/servicios/usucapion" },
+  { titulo: "Contratos de Alquiler", href: "/servicios/contratos-alquiler" },
+  { titulo: "Contrato de Mutuo y Comodato", href: "/servicios/mutuo-comodato" },
+  { titulo: "Convenio Extrajudicial", href: "/servicios/convenio-extrajudicial" },
+  { titulo: "Compra de Lotes – Terrenos", href: "/servicios/compra-lotes-terrenos" },
+];
+---
+
+<section class="relative isolate py-16">
+  <!-- Fondo de la sección para tapar la imagen global -->
+  <div class="absolute inset-0 z-0 bg-[#1f3c4c]"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4">
+    <!-- Bloque: Servicios Generales -->
+    <header class="text-center mb-8">
+      <h2 class="uppercase tracking-[0.18em] text-hueso text-xl sm:text-2xl">Nuestros Servicios Generales</h2>
+      <div class="mx-auto mt-3 h-[2px] w-28 bg-beige"></div>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      {serviciosGenerales.map((s, i) => (
+        <a
+          href={s.href ?? "#"}
+          class={`group relative flex flex-col justify-between p-7 h-44 rounded-xl shadow-sm
+                  transform transition-all duration-300 ease-out hover:scale-105 hover:-translate-y-1
+                  border ${i % 2 === 0
+                    ? "bg-hueso text-azulProfundo border-transparent hover:border-azulAereo/30"
+                    : "bg-azulProfundo text-hueso border-hueso hover:border-hueso/80"}`}
+        >
+          <h3 class="text-lg font-semibold tracking-wide uppercase transition-all duration-300 group-hover:text-xl">
+            {s.titulo}
+          </h3>
+          <span class={`inline-flex items-center justify-center px-5 py-2 text-sm font-semibold rounded-full border transition-colors duration-300
+            ${i % 2 === 0
+              ? "border-azulProfundo text-azulProfundo group-hover:bg-azulProfundo group-hover:text-hueso"
+              : "border-hueso text-hueso group-hover:bg-hueso group-hover:text-azulProfundo"}`}>
+            Reservar turno
+          </span>
+        </a>
+      ))}
+    </div>
+
+    <!-- Bloque: Servicios Especializados -->
+    <header class="text-center mt-16 mb-6">
+      <h2 class="uppercase tracking-[0.18em] text-hueso text-xl sm:text-2xl">Nuestros Servicios Especializados</h2>
+      <p class="mt-2 text-hueso/80 italic text-base">Te gestionamos y acompañamos durante todo el proceso de…</p>
+      <div class="mx-auto mt-3 h-[2px] w-28 bg-beige"></div>
+    </header>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      {serviciosEspecializados.map((s,i) => (
+        <a
+          href={s.href ?? "#"}
+          class={`group relative flex flex-col justify-between px-7 py-9 h-50 rounded-xl shadow-sm md:space-y-5
+                  transform transition-all duration-300 ease-out hover:scale-105 hover:-translate-y-1
+                  border ${i % 2 === 0
+                    ?  "bg-azulProfundo text-hueso border-hueso hover:border-hueso/80"
+                    :"bg-hueso text-azulProfundo border-transparent hover:border-azulAereo/30"}`}
+        >
+          <h3 class="text-lg font-semibold tracking-wide uppercase transition-all duration-300 group-hover:text-xl">
+            {s.titulo}
+          </h3>
+          <span class={`inline-flex items-center justify-center px-5 py-2 text-sm font-semibold rounded-full border transition-colors duration-300
+            ${i % 2 === 0
+              ? "border-hueso text-hueso group-hover:bg-hueso group-hover:text-azulProfundo"
+              : "border-azulProfundo text-azulProfundo group-hover:bg-azulProfundo group-hover:text-hueso" }`}>
+            Reservar turno
+          </span>
+        </a>
+      ))}
+    </div>
+
+    <!-- Textos al pie -->
+    <div class="mt-8 text-center text-hueso/85 text-base space-y-2">
+      <p>
+        Contamos con gestoría para informes de dominio, informes de <span class="underline">cesión</span> e inhibición,
+        <span class="underline"> cédula catastral</span>, valuación fiscal y valuación inmobiliaria ARBA.
+      </p>
+      <p>
+        También con ingeniero civil para todo lo relevante a Agrimensura, Estados Parcelarios, planos de obra y planos de subdivisión.
+      </p>
+    </div>
+  </div>
+</section>

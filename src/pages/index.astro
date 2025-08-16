@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Encabezado from "../components/Encabezado.astro";
+import Servicios from "../components/Servicios.astro";
+import QuienesSomos from "../components/Quienes_somos.astro";
+import Contacto from "../components/Contacto.astro";
+import logo from "../img/Logo.png";
+import logoRedondo from "../img/Logo_3.png";
+import fondo from "../img/Fondo.jpg";
+
+const { title = "Sitio" } = Astro.props;
+
+const servicios = [
+  { title: "Derecho Civil", href: "/servicios/civil" },
+  { title: "Derecho Inmobiliario", href: "/servicios/inmobiliario" },
+  { title: "Derecho Sucesorio", href: "/servicios/sucesorio" },
+  { title: "Derecho Migratorio", href: "/servicios/migratorio" },
+  { title: "Derecho de Familia" },
+  { title: "Derecho Laboral" },
+  { title: "Derecho Comercial" },
+  { title: "Ciudadanía y Visas" },
+  { title: "Mediaciones" },
+  { title: "Audiencias" },
+  { title: "Convenio o Acuerdos" },
+  { title: "Análisis y Vistas de Expedientes" },
+];
+---
+<BaseLayout title="Estudio Jurídico | Nueva Celina & Asoc.">
+  <Encabezado
+        bgImage="/images/hero.jpg"
+        logo={logo.src}
+        bgImage={fondo.src}
+        pretitle="ESTUDIO JURÍDICO"
+        title="NUEVA CELINA & ASOCIADOS"
+        lemaStrong='"Pidan y se les dará; busquen y encontrarán; llamen y se les abrirá” '
+        lema="Mateo 7:7"
+      >
+        <a
+          href="/turnos"
+          class="inline-block px-6 py-3 rounded-xl bg-azulAereo text-hueso hover:bg-beige hover:text-azulProfundo transition"
+        >
+          Reservar turno
+        </a>
+      </Encabezado>
+      <Servicios items={servicios} title="Nuestros servicio" />
+      <QuienesSomos
+        headline="FROIMOVICI & ASOCIADOS"
+        introHtml={`<p><strong>Froimovici & Asociados</strong> es un Estudio Jurídico único en su clase, orientado a brindar soluciones integrales con integridad y excelencia.</p><p>Trabajamos junto a cada cliente con honestidad y profesionalismo.</p>`}
+        ctaText="Turno"
+        ctaHref="/quienes-somos"
+        members={[
+          {
+            name: "María Pérez",
+            role: "Abogada",
+            photo: "/images/persona1.png",
+            tagline: "Derecho Civil",
+          },
+          {
+            name: "Lucía Gómez",
+            role: "Abogada",
+            photo: "/images/persona2.png",
+            tagline: "Comercial",
+          },
+          {
+            name: "Ana López",
+            role: "Abogada",
+            photo: "/images/persona3.png",
+            tagline: "Familia",
+          },
+        ]}
+      />
+      <Contacto />
+</BaseLayout>

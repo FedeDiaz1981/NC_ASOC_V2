@@ -1,0 +1,37 @@
+---
+import logo from "../img/Logo_3.png"
+---
+<footer class="bg-azulAereo text-hueso text-sm relative z-10 bg-azulAereo text-hueso text-sm">
+  <div class="h-[2px] w-full bg-beige"></div>
+  <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-8">
+    <!-- Logo + lema -->
+    <div class="space-y-5 ">
+      <p class="text-hueso/80 uppercase pt-6">
+        <img src={logo.src} alt="Logo" class="w-auto inline mr-2" /> Villa Celina & Asociados
+      </p>
+    </div>
+
+    <!-- Links -->
+    <div class="hidden md:inline">
+      <h3 class="font-semibold mb-3 text-beige">Enlaces</h3>
+      <ul class="space-y-2 text-hueso/80">
+        <li><a href="/" class="hover:text-beige transition">Inicio</a></li>
+        <li><a href="/turnos" class="hover:text-beige transition">Turnos</a></li>
+        <li><a href="#contacto" class="hover:text-beige transition">Contactos</a></li>
+      </ul>
+    </div>
+
+    <!-- Contacto -->
+    <div>
+      <h3 class="font-semibold mb-3 text-beige">Contacto</h3>
+      <p class="text-hueso/80">Tel: +54 11 3023-6775</p>
+      <p class="text-hueso/80">Email: estudionuevacelina@gmail.com</p>
+      <p class="text-hueso/80">​General pintos 2830, Villa Celina, Bs. As. Argentina</p>
+    </div>
+  </div>
+
+  <!-- Bottom bar -->
+  <div class="border-t border-hueso/20 py-4 text-center text-hueso/60">
+    © {new Date().getFullYear()} Nueva CelinaS & Asociados. Todos los derechos reservados.
+  </div>
+</footer>

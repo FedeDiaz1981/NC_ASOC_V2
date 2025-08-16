@@ -1,0 +1,114 @@
+---
+import logo from "../img/Logo_3.png";
+---
+
+<header
+  class="sticky top-0 z-50 bg-azulAereo text-hueso shadow-[0_1px_0_0_rgba(255,255,255,0.06)] h-[80px] pt-3"
+>
+  <div class="hidden h-[2px] w-full bg-beige"></div>
+  <div class="max-w-7xl mx-auto px-3 sm:px-4">
+    <div class="grid grid-cols-3 items-center h-12 align-middle">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-2">
+        <img src={logo.src} alt="Logo" class="h-9 w-auto" />
+        <span
+          class="hidden md:inline text-[11px] tracking-[0.12em] font-semibold text-hueso"
+          >NUEVA CELINA & ASOCIADOS</span
+        >
+      </a>
+
+      <!-- Nav -->
+      <nav
+        class="hidden md:flex mx-auto items-center justify-center gap-0 text-[10.5px] tracking-[0.22em] uppercase"
+      >
+        <a
+          href="/"
+          class="group px-3 py-1 text-hueso hover:text-beige transition-colors relative"
+          data-active={Astro.url.pathname === "/"}
+        >
+          <span
+            class="absolute top-0 left-0 w-full h-[2px] bg-hueso/40 group-hover:bg-beige [data-active='true']:bg-beige"
+          ></span>
+          <span>Inicio</span>
+        </a>
+        <span class="text-hueso/30 select-none">|</span>
+        <a
+          href="/quienes-somos"
+          class="group px-3 py-1 text-hueso hover:text-beige transition-colors relative"
+          data-active={Astro.url.pathname === "/turnos"}
+        >
+          <span
+            class="absolute top-0 left-0 w-full h-[2px] bg-hueso/40 group-hover:bg-beige [data-active='true']:bg-beige"
+          ></span>
+          <span>Quienes Somos</span>
+        </a>
+         <span class="text-hueso/30 select-none">|</span>
+        <a
+          href="/servicios"
+          class="group px-3 py-1 text-hueso hover:text-beige transition-colors relative"
+          data-active={Astro.url.pathname === "/turnos"}
+        >
+          <span
+            class="absolute top-0 left-0 w-full h-[2px] bg-hueso/40 group-hover:bg-beige [data-active='true']:bg-beige"
+          ></span>
+          <span>Servicios</span>
+        </a>
+        <span class="text-hueso/30 select-none">|</span>
+        <a
+          href="/contacto"
+          class="group px-3 py-1 text-hueso hover:text-beige transition-colors relative"
+          data-active={Astro.url.pathname === "/contacto"}
+        >
+          <span
+            class="absolute top-0 left-0 w-full h-[2px] bg-hueso/40 group-hover:bg-beige [data-active='true']:bg-beige"
+          ></span>
+          <span>Contacto</span>
+        </a>
+      </nav>
+
+      <!-- Hamburguesa -->
+      <div class="col-start-3 justify-self-end flex items-center">
+        <button
+          id="menuBtn"
+          class="md:hidden inline-flex items-center justify-center p-2 rounded hover:bg-hueso/10 focus:outline-none"
+          aria-label="Abrir menú"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="h-6 w-6"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M3.75 5.25a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 6a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 5.25a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z"
+              clip-rule="evenodd"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Menú mobile -->
+  <div
+    id="mobileMenu"
+    class="md:hidden hidden border-t border-hueso/20 bg-azulAereo"
+  >
+    <nav
+      class="px-4 py-3 flex flex-col text-[11px] tracking-[0.22em] uppercase"
+    >
+      <a href="/" class="py-2 text-hueso hover:text-beige">Inicio</a>
+      <a href="/quienes-somos" class="py-2 text-hueso hover:text-beige">Quiénes Somos</a>
+      <a href="/servicios" class="py-2 text-hueso hover:text-beige">Servicios</a>
+      <a href="/contacto" class="py-2 text-hueso hover:text-beige">Contacto</a>
+    </nav>
+  </div>
+
+  <script>
+    const btn = document.getElementById("menuBtn");
+    const menu = document.getElementById("mobileMenu");
+    btn?.addEventListener("click", () => {
+      menu?.classList.toggle("hidden");
+    });
+  </script>
+</header>
