@@ -9,35 +9,57 @@ import logo from "../img/Logo.png";
 import logoRedondo from "../img/Logo_3.png";
 import fondo from "../img/Fondo.jpg";
 
-const { title = "Sitio" } = Astro.props;
+/** Props: title y lang (idioma actual) */
+interface Props {
+  title?: string;
+  lang?: 'es' | 'en';
+}
+const { title = "Sitio", lang = 'es' } = Astro.props as Props;
+
+/** Rutas actuales/alternas para hreflang */
+const path = Astro.url.pathname;
+// ruta actual normalizada
+const current =
+  lang === 'en'
+    ? '/en' + (path === '/' ? '' : path.replace(/^\/en/, ''))
+    : path.replace(/^\/en/, '') || '/';
+// ruta alternativa (el otro idioma)
+const alt =
+  lang === 'en'
+    ? path.replace(/^\/en/, '') || '/'
+    : '/en' + (path === '/' ? '' : path);
 ---
 
-<html lang="es">
+<html lang={lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/png" href={logoRedondo.src} />
-    <title>{title}</title>
 
-      <script is:inline>
+    <title>{title}</title>
+    <link rel="icon" type="image/png" href={logoRedondo.src} />
+
+    <!-- SEO: versiones alternas por idioma -->
+    <link rel="alternate" href={current} hreflang={lang} />
+    <link rel="alternate" href={alt} hreflang={lang === 'en' ? 'es' : 'en'} />
+    <link rel="alternate" href={current} hreflang="x-default" />
+
+    <!-- AOS init -->
+    <script is:inline>
       import AOS from "aos";
       document.addEventListener("astro:page-load", () => {
-        AOS.init({
-          duration: 700,
-          easing: "ease-out-quart",
-          once: true,
-          offset: 80,
-        });
+        AOS.init({ duration: 700, easing: "ease-out-quart", once: true, offset: 80 });
       });
     </script>
-
   </head>
+
   <body class="flex flex-col min-h-screen bg-white text-slate-900">
-    <Header />
+    
+    <Header lang={lang} />
+
     <main class="flex-1">
-      
-     <slot />   
+      <slot />
     </main>
-    <Footer />
+
+    <Footer lang={lang} />
   </body>
 </html>

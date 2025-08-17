@@ -13,6 +13,7 @@ interface Props {
   descripcionLeft?: string;
   email?: string;
   phone?: string;
+  phone2?: string;
   addressHtml?: string; // Permite saltos de línea simples
   whatsapp?: { label: string; href: string }[];
 }
@@ -22,10 +23,12 @@ const {
   titleRight = "¡Consultanos ahora!",
   descripcionLeft = "Entrá ya en Contacto Directo con nosotros y evaluemos la Mejor Solución para vos. Solicita tu turno virtual o presencial con un solo",
   email = "estudionuevacelina@gmail.com",
-  phone = "+54 9 11 3023 6775",
+  phone = "+54 9 11 3023 6775", 
+  phone2 = "+54 9 11 5617 0620",
   addressHtml = `General pintos 2830\nVilla Celina\nLa matanza,Bs.As.\nArgentina`,
   whatsapp = [
-    { label: "+54 9 11 3023 6775", href: "https://wa.me/5491130236775" }
+    { label: "+54 9 11 3023 6775", href: "https://wa.me/5491130236775" },
+    { label: "+54 9 11 5617 0620", href: "https://wa.me/5491156170620" }
   ],
 } = Astro.props as Props;
 ---
@@ -40,7 +43,7 @@ const {
 
         <div class="text-azulProfundo/90 space-y-4 text-sm leading-relaxed">
           <p>{descripcionLeft} <a class="uppercase font-semibold" href="#">click</a></p>
-          <p>De Lunes a Viernes de 9 a 18 horas<br />{phone}<br /><a class="underline hover:text-azulAereo" href={`mailto:${email}`}>{email}</a></p>
+          <p>De Lunes a Viernes de 9 a 18 horas<br />{phone}<br />{phone2}<br /><a class="underline hover:text-azulAereo" href={`mailto:${email}`}>{email}</a></p>
 
           <div>
             <p class="font-semibold">También podés comunicarte con nosotros vía WhatsApp:</p>
