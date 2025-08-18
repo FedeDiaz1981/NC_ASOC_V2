@@ -1,10 +1,11 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import Contacto_2 from "../components/Contacto.astro";
-import bg_image from "../img/Fondo.jpg";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Contacto_2 from "../../components/Contacto.astro";
+import bg_image from "../../img/Fondo.jpg";
+const lang = "en";
 ---
 
-<BaseLayout title="Estudio Jurídico | Nueva Celina & Asoc.">
+<BaseLayout title="Estudio Jurídico | Nueva Celina & Asoc." lang={lang}>
   <!-- Fondo fijo detrás (robusto en iOS) -->
   <div
     aria-hidden="true"
@@ -28,5 +29,5 @@ import bg_image from "../img/Fondo.jpg";
     </div>
   </div>
   
-  <Contacto_2 />
+  <Contacto_2 lang={lang}/>
 </BaseLayout>

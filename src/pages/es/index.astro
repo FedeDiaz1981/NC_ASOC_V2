@@ -1,0 +1,62 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Encabezado from "../../components/Encabezado.astro";
+import Servicios from "../../components/Servicios.astro";
+import QuienesSomos from "../../components/Quienes_somos.astro";
+import Contacto from "../../components/Contacto.astro";
+
+import fondo from "../../img/Fondo.jpg"; // fondo de héroe
+import logoRedondo from "../../img/Logo_3.png"; // logotipo (favicon lo maneja el layout)
+import caption from "../../img/Logo.png";
+import { dictionaries, type Locale } from "../../i18n";
+import { lnk } from "../../i18n/routing";
+
+
+const lang = "es"
+
+const dict = dictionaries[lang];
+
+const brand = dict.common?.brand ?? "Nueva Celina & Asociados";
+
+const pageTitle = `Estudio Jurídico | ${brand}`;
+
+import img_1 from "../../img/P_01.png";
+import img_2 from "../../img/P_02.png";
+import img_3 from "../../img/P_03.png";
+---
+
+<BaseLayout title={pageTitle} lang={lang}>
+  <!-- Encabezado / hero -->
+
+  <Encabezado lang={lang} bgImage={fondo} logo={caption} />
+
+  
+  <Servicios lang={lang} />
+
+
+  <QuienesSomos lang={lang}
+    members={[
+      {
+        name: "María Pérez",
+        role: "Abogada",
+        photo: img_1.src,
+        tagline: "Derecho Civil",
+      },
+      {
+        name: "Lucía Gómez",
+        role: "Abogada",
+        photo: img_2.src,
+        tagline: "Comercial",
+      },
+      {
+        name: "Ana López",
+        role: "Abogada",
+        photo: img_3.src,
+        tagline: "Familia",
+      },
+    ]}
+  />
+
+ 
+  <Contacto lang={lang} />
+</BaseLayout>

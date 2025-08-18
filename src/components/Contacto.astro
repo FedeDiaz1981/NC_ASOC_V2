@@ -1,29 +1,28 @@
 ---
 /**
- * Componente: Contacto.astro
- * Basado en el layout de referencia: columna izquierda (info + agenda) y derecha (formulario)
- * Usa la paleta del sitio: hueso, beige, azulAereo, azulProfundo
- *
- * Props opcionales para completar textos rápidamente.
+ * Contacto.astro (i18n)
+ * - Columna izquierda (info) + derecha (form).
+ * - Usa diccionario i18n: dictionaries[lang].contact
  */
+import { dictionaries, type Locale } from "../i18n";
 
 interface Props {
-  titleLeft?: string;
-  titleRight?: string;
-  descripcionLeft?: string;
+  lang?: Locale;
+  // Si querés, podés seguir sobreescribiendo datos de contacto por props:
   email?: string;
   phone?: string;
   phone2?: string;
-  addressHtml?: string; // Permite saltos de línea simples
+  addressHtml?: string;
   whatsapp?: { label: string; href: string }[];
 }
 
+const { lang = "es" } = Astro.props as Props;
+const dict = dictionaries[lang].contact;
+
+// Datos estáticos (podés seguir pasándolos por props si querés)
 const {
-  titleLeft = "¡Hablemos hoy!",
-  titleRight = "¡Consultanos ahora!",
-  descripcionLeft = "Entrá ya en Contacto Directo con nosotros y evaluemos la Mejor Solución para vos. Solicita tu turno virtual o presencial con un solo",
   email = "estudionuevacelina@gmail.com",
-  phone = "+54 9 11 3023 6775", 
+  phone = "+54 9 11 3023 6775",
   phone2 = "+54 9 11 5617 0620",
   addressHtml = `General pintos 2830\nVilla Celina\nLa matanza,Bs.As.\nArgentina`,
   whatsapp = [
@@ -32,23 +31,33 @@ const {
   ],
 } = Astro.props as Props;
 ---
+
 <section id="contacto" class="relative bg-hueso py-16">
   <div class="max-w-7xl mx-auto px-4">
     <div class="grid lg:grid-cols-2 gap-10">
       <!-- Columna izquierda: Info -->
       <div class="space-y-6 lg:pr-6 lg:border-r lg:border-azulAereo/20">
         <header>
-          <h2 class="text-azulProfundo text-2xl font-bold tracking-wide uppercase">{titleLeft}</h2>
+          <h2 class="text-azulProfundo text-2xl font-bold tracking-wide uppercase">
+            {dict.leftTitle}
+          </h2>
         </header>
 
         <div class="text-azulProfundo/90 space-y-4 text-sm leading-relaxed">
-          <p>{descripcionLeft} <a class="uppercase font-semibold" href="#">click</a></p>
-          <p>De Lunes a Viernes de 9 a 18 horas<br />{phone}<br />{phone2}<br /><a class="underline hover:text-azulAereo" href={`mailto:${email}`}>{email}</a></p>
+          <p>
+            {dict.leftDescription} <a class="uppercase font-semibold" href="#">{dict.click}</a>
+          </p>
+          <p>
+            {dict.businessHours}<br />
+            {phone}<br />
+            {phone2}<br />
+            <a class="underline hover:text-azulAereo" href={`mailto:${email}`}>{email}</a>
+          </p>
 
           <div>
-            <p class="font-semibold">También podés comunicarte con nosotros vía WhatsApp:</p>
+            <p class="font-semibold">{dict.viaWhatsApp}</p>
             <ul class="mt-2 space-y-1">
-              {whatsapp.map(w => (
+              {whatsapp.map((w) => (
                 <li>
                   <a class="inline-flex items-center gap-2 text-azulAereo hover:underline" href={w.href} target="_blank" rel="noopener">
                     <span class="i bi-whatsapp"></span>{w.label}
@@ -59,50 +68,53 @@ const {
           </div>
 
           <div>
-            <p class="font-semibold">O te esperamos en nuestro Estudio en:</p>
+            <p class="font-semibold">{dict.officeAddress}</p>
             <p set:html={addressHtml.replaceAll("\n", "<br/>")}></p>
           </div>
         </div>
 
-        <!-- Agenda bloque -->
+        <!-- Agenda bloque (oculto por ahora) -->
         <div class="hidden pt-6 border-t border-azulAereo/15">
-          <h3 class="text-azulProfundo text-xl font-semibold uppercase tracking-wide">¡Agendá un turno online!</h3>
-          <p class="mt-2 text-sm text-azulProfundo/80">Elegí la opción que mejor se adecúe a tu disponibilidad de tiempo para conocernos y evaluar tus necesidades.</p>
+          <h3 class="text-azulProfundo text-xl font-semibold uppercase tracking-wide">{dict.bookOnline}</h3>
+          <p class="mt-2 text-sm text-azulProfundo/80">{dict.bookOnlineDesc}</p>
           <div class="mt-4 flex gap-3">
             <img src="/images/gal-1.jpg" alt="Galería 1" class="h-14 w-20 object-cover rounded" />
             <img src="/images/gal-2.jpg" alt="Galería 2" class="h-14 w-20 object-cover rounded" />
             <img src="/images/gal-3.jpg" alt="Galería 3" class="h-14 w-20 object-cover rounded" />
             <img src="/images/gal-4.jpg" alt="Galería 4" class="h-14 w-20 object-cover rounded" />
           </div>
-          <a href="/turnos" class="mt-5 inline-flex items-center justify-center rounded-full border border-azulAereo px-5 py-2 text-sm font-semibold text-azulAereo hover:bg-azulAereo hover:text-hueso transition">Agendarme</a>
+          <a href="/turnos" class="mt-5 inline-flex items-center justify-center rounded-full border border-azulAereo px-5 py-2 text-sm font-semibold text-azulAereo hover:bg-azulAereo hover:text-hueso transition">
+            {dict.bookMe}
+          </a>
         </div>
       </div>
-      <!-- Divisor eliminado; usamos border en la columna izquierda -->
 
       <!-- Columna derecha: Form -->
       <div class="lg:pl-6">
         <header>
-          <h2 class="text-azulProfundo text-2xl font-bold tracking-wide uppercase">{titleRight}</h2>
-          <p class="mt-2 text-xs text-azulProfundo/70">Dejanos tus datos personales y en breve nos pondremos en contacto con vos.</p>
+          <h2 class="text-azulProfundo text-2xl font-bold tracking-wide uppercase">
+            {dict.rightTitle}
+          </h2>
+          <p class="mt-2 text-xs text-azulProfundo/70">{dict.formLead}</p>
         </header>
 
         <form id="contactForm" class="mt-5 space-y-3" on:submit.prevent>
           <div class="grid sm:grid-cols-2 gap-3">
-            <input name="nombre" placeholder="Nombre" required class="w-full border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo" />
-            <input name="apellido" placeholder="Apellido" required class="w-full border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo" />
+            <input name="nombre" placeholder={dict.labels.name} required class="w-full border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo" />
+            <input name="apellido" placeholder={dict.labels.lastname} required class="w-full border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo" />
           </div>
-          <input name="email" type="email" placeholder="Email" required class="w-full border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo" />
-          <input name="telefono" placeholder="Teléfono" class="w-full border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo" />
-          <textarea name="mensaje" placeholder="Contanos brevemente tu consulta..." required class="w-full min-h-[120px] border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo"></textarea>
+          <input name="email" type="email" placeholder={dict.labels.email} required class="w-full border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo" />
+          <input name="telefono" placeholder={dict.labels.phone} class="w-full border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo" />
+          <textarea name="mensaje" placeholder={dict.labels.message} required class="w-full min-h-[120px] border border-azulAereo/25 focus:border-azulAereo outline-none rounded px-3 py-2 bg-white text-azulProfundo"></textarea>
 
           <div class="hidden flex items-center gap-2 text-xs text-azulProfundo/80">
             <label class="inline-flex items-center gap-2">
               <input type="checkbox" name="boletin" class="accent-azulAereo" />
-              Quiero suscribirme al boletín.
+              {dict.newsletter}
             </label>
             <label class="inline-flex items-center gap-2">
               <input type="checkbox" name="terminos" required class="accent-azulAereo" />
-              Acepto los Términos y Condiciones.
+              {dict.terms}
             </label>
           </div>
 
@@ -110,7 +122,13 @@ const {
           <input type="text" name="sitio" class="hidden" tabindex="-1" autocomplete="off" />
 
           <div class="pt-2">
-            <button id="sendBtn" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-azulAereo text-hueso px-6 py-2 font-semibold hover:bg-beige hover:text-azulProfundo transition">Contactarme</button>
+            <button
+              id="sendBtn"
+              data-send={dict.send}
+              data-sending={dict.sending}
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full bg-azulAereo text-hueso px-6 py-2 font-semibold hover:bg-beige hover:text-azulProfundo transition">
+              {dict.send}
+            </button>
           </div>
 
           <p id="formMsg" class="text-xs text-azulProfundo/70"></p>
@@ -120,50 +138,48 @@ const {
   </div>
 
   <script type="module">
-// @ts-check
+    // @ts-check
+    // @ts-ignore
+    /** @type {HTMLFormElement | null} */ const form = document.getElementById('contactForm');
+    // @ts-ignore
+    /** @type {HTMLButtonElement | null} */ const btn  = document.getElementById('sendBtn');
+    // @ts-ignore
+    /** @type {HTMLParagraphElement | null} */ const msg  = document.getElementById('formMsg');
 
-/** @type {HTMLFormElement | null} */
-// @ts-ignore
-const form = document.getElementById('contactForm');
-/** @type {HTMLButtonElement | null} */
-// @ts-ignore
-const btn  = document.getElementById('sendBtn');
-/** @type {HTMLParagraphElement | null} */
-// @ts-ignore
-const msg  = document.getElementById('formMsg');
+    if (form && btn && msg) {
+      const TXT_SEND = btn.dataset.send || 'Enviar';
+      const TXT_SENDING = btn.dataset.sending || 'Enviando...';
 
-if (form && btn && msg) {
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    msg.textContent = '';
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        msg.textContent = '';
 
-    const fd = new FormData(form);
-    const payload = Object.fromEntries(fd.entries());
+        const fd = new FormData(form);
+        const payload = Object.fromEntries(fd.entries());
 
-    btn.disabled = true;
-    btn.textContent = 'Enviando...';
+        btn.disabled = true;
+        btn.textContent = TXT_SENDING;
 
-    try {
-      const res  = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        try {
+          const res  = await fetch('/api/contact', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          const json = await res.json();
+          if (json.ok) {
+            msg.textContent = "{{dict.success}}";
+            form.reset();
+          } else {
+            msg.textContent = json.error || "{{dict.error}}";
+          }
+        } catch {
+          msg.textContent = "{{dict.networkError}}";
+        } finally {
+          btn.disabled = false;
+          btn.textContent = TXT_SEND;
+        }
       });
-      const json = await res.json();
-      if (json.ok) {
-        msg.textContent = '¡Gracias! Te responderemos a la brevedad.';
-        form.reset();
-      } else {
-        msg.textContent = json.error || 'No se pudo enviar. Intentá nuevamente.';
-      }
-    } catch {
-      msg.textContent = 'Error de red. Probá otra vez.';
-    } finally {
-      btn.disabled = false;
-      btn.textContent = 'Contactarme';
     }
-  });
-}
-</script>
-
+  </script>
 </section>

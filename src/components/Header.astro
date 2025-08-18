@@ -1,88 +1,117 @@
 ---
 import logo from "../img/Logo_3.png";
+import { dictionaries } from "../i18n";
+
+/* Ruta actual */
+const pathname = Astro.url.pathname;
+
+/* 1) Idioma por prefijo de ruta */
+const first = pathname.split("/")[1];
+const lang: "es" | "en" = first === "en" ? "en" : "es";
+const prefix = `/${lang}`;
+
+/* 2) Helpers de enlace y activo */
+const href = (rel: string = "") => (rel ? `${prefix}/${rel}` : `${prefix}/`);
+const normalize = (p: string) => p.replace(/\/+$/, "/");
+const isActive = (rel: string = "") => normalize(pathname) === normalize(href(rel));
+
+/* 3) Selector de idioma: rehacer la ruta con el prefijo nuevo */
+const withoutLang = pathname.replace(/^\/(es|en)(?=\/|$)/, "") || "/";
+const hrefForLang = (to: "es" | "en") => `/${to}${withoutLang}`;
+
+/* 4) Diccionario */
+const d = dictionaries[lang];
+const brand = d.common?.brand ?? "Nueva Celina & Asociados";
+const navText = d.common?.nav ?? { home: "Inicio", services: "Servicios", turns: "Turnos", contact: "Contacto", about: "Quiénes Somos" };
+
+/* 5) Items (labels del diccionario, rutas locales) */
+const items = [
+  { rel: "",              label: navText.home },
+  { rel: "quienes-somos", label: navText.about },
+  { rel: "servicios",     label: navText.services },
+  { rel: "turnos",        label: navText.turns },
+  { rel: "contacto",      label: navText.contact },
+];
 ---
 
-<header
-  class="sticky top-0 z-50 bg-azulAereo text-hueso shadow-[0_1px_0_0_rgba(255,255,255,0.06)] h-[80px] pt-3"
->
+<header class="sticky top-0 z-50 bg-azulAereo text-hueso shadow-[0_1px_0_0_rgba(255,255,255,0.06)] h-[80px] pt-3">
   <div class="hidden h-[2px] w-full bg-beige"></div>
+
   <div class="max-w-7xl mx-auto px-3 sm:px-4">
     <div class="grid grid-cols-3 items-center h-12 align-middle">
-      <!-- Logo -->
-      <a href="/" class="flex items-center gap-2">
-        <img src={logo.src} alt="Logo" class="h-9 w-auto" />
-        <span
-          class="hidden md:inline text-[11px] tracking-[0.12em] font-semibold text-hueso"
-          >NUEVA CELINA & ASOCIADOS</span
-        >
+      <!-- Logo + marca desde diccionario -->
+      <a href={href()} class="flex items-center gap-2">
+        <img src={logo.src} alt={brand} class="h-9 w-auto" />
+        <span class="hidden md:inline text-[11px] tracking-[0.12em] font-semibold text-hueso">
+          {brand}
+        </span>
       </a>
 
-      <!-- Nav -->
-      <nav
-        class="hidden md:flex mx-auto items-center justify-center gap-0 text-[10.5px] tracking-[0.22em] uppercase"
-      >
-        <a
-          href="/"
-          class="group px-3 py-1 text-hueso hover:text-beige transition-colors relative"
-          data-active={Astro.url.pathname === "/"}
-        >
-          <span
-            class="absolute top-0 left-0 w-full h-[2px] bg-hueso/40 group-hover:bg-beige [data-active='true']:bg-beige"
-          ></span>
-          <span>Inicio</span>
-        </a>
-        <span class="text-hueso/30 select-none">|</span>
-        <a
-          href="/quienes-somos"
-          class="group px-3 py-1 text-hueso hover:text-beige transition-colors relative"
-          data-active={Astro.url.pathname === "/turnos"}
-        >
-          <span
-            class="absolute top-0 left-0 w-full h-[2px] bg-hueso/40 group-hover:bg-beige [data-active='true']:bg-beige"
-          ></span>
-          <span>Quienes Somos</span>
-        </a>
-         <span class="text-hueso/30 select-none">|</span>
-        <a
-          href="/servicios"
-          class="group px-3 py-1 text-hueso hover:text-beige transition-colors relative"
-          data-active={Astro.url.pathname === "/turnos"}
-        >
-          <span
-            class="absolute top-0 left-0 w-full h-[2px] bg-hueso/40 group-hover:bg-beige [data-active='true']:bg-beige"
-          ></span>
-          <span>Servicios</span>
-        </a>
-        <span class="text-hueso/30 select-none">|</span>
-        <a
-          href="/contacto"
-          class="group px-3 py-1 text-hueso hover:text-beige transition-colors relative"
-          data-active={Astro.url.pathname === "/contacto"}
-        >
-          <span
-            class="absolute top-0 left-0 w-full h-[2px] bg-hueso/40 group-hover:bg-beige [data-active='true']:bg-beige"
-          ></span>
-          <span>Contacto</span>
-        </a>
+      <!-- Nav desktop (labels i18n) -->
+      <nav class="hidden md:flex mx-auto items-center justify-center gap-0 text-[10.5px] tracking-[0.22em] uppercase">
+        {items.map((it, idx) => (
+          <>
+            <a
+              href={href(it.rel)}
+              class="group px-3 py-1 text-hueso hover:text-beige transition-colors relative"
+              data-active={isActive(it.rel)}
+            >
+              <span class="absolute top-0 left-0 w-full h-[2px] bg-hueso/40 group-hover:bg-beige [data-active='true']:bg-beige"></span>
+              <span>{it.label}</span>
+            </a>
+            {idx < items.length - 1 ? <span class="text-hueso/30 select-none">|</span> : null}
+          </>
+        ))}
       </nav>
 
-      <!-- Hamburguesa -->
-      <div class="col-start-3 justify-self-end flex items-center">
+      <!-- Selector de idioma + Hamburguesa -->
+      <div class="col-start-3 justify-self-end flex items-center gap-3">
+        <!-- Selector idioma (desktop) -->
+        <div class="hidden md:flex items-center gap-3 mr-1 select-none">
+          <a
+            href={hrefForLang("es")}
+            onclick="try{localStorage.setItem('lang','es')}catch{}"
+            class={`inline-flex items-center gap-2 px-2 py-1 rounded transition-colors duration-200
+              ${lang === 'es' ? 'text-beige underline decoration-beige/70 underline-offset-4' : 'text-hueso/90 hover:text-beige/90'}`}
+            aria-current={lang === "es" ? "page" : undefined}
+          >
+            <span class="inline-block h-4 w-6 rounded-sm overflow-hidden ring-1 ring-white/20">
+              <svg viewBox="0 0 3 2" class="h-full w-full">
+                <rect width="3" height="2" fill="#74ACDF" />
+                <rect y="0.66" width="3" height="0.68" fill="#fff" />
+              </svg>
+            </span>
+            <span class="text-xs font-semibold tracking-wide">ES</span>
+          </a>
+
+          <span class="text-hueso/40">|</span>
+
+          <a
+            href={hrefForLang("en")}
+            onclick="try{localStorage.setItem('lang','en')}catch{}"
+            class={`inline-flex items-center gap-2 px-2 py-1 rounded transition-colors duration-200
+              ${lang === 'en' ? 'text-beige underline decoration-beige/70 underline-offset-4' : 'text-hueso/90 hover:text-beige/90'}`}
+            aria-current={lang === "en" ? "page" : undefined}
+          >
+            <span class="inline-block h-4 w-6 rounded-sm overflow-hidden ring-1 ring-white/20">
+              <svg viewBox="0 0 7410 3900" class="h-full w-full">
+                <path fill="#b22234" d="M0 0h7410v3900H0z" />
+                <path stroke="#fff" stroke-width="300" d="M0 450h7410M0 1050h7410M0 1650h7410M0 2250h7410M0 2850h7410M0 3450h7410" />
+                <path fill="#3c3b6e" d="M0 0h2964v2100H0z" />
+              </svg>
+            </span>
+            <span class="text-xs font-semibold tracking-wide">EN</span>
+          </a>
+        </div>
+
+        <!-- Hamburguesa -->
         <button
           id="menuBtn"
           class="md:hidden inline-flex items-center justify-center p-2 rounded hover:bg-hueso/10 focus:outline-none"
           aria-label="Abrir menú"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="h-6 w-6"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M3.75 5.25a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 6a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 5.25a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z"
-              clip-rule="evenodd"></path>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-6 w-6">
+            <path fill-rule="evenodd" d="M3.75 5.25a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 6a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 5.25a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd" />
           </svg>
         </button>
       </div>
@@ -90,17 +119,43 @@ import logo from "../img/Logo_3.png";
   </div>
 
   <!-- Menú mobile -->
-  <div
-    id="mobileMenu"
-    class="md:hidden hidden border-t border-hueso/20 bg-azulAereo"
-  >
-    <nav
-      class="px-4 py-3 flex flex-col text-[11px] tracking-[0.22em] uppercase"
-    >
-      <a href="/" class="py-2 text-hueso hover:text-beige">Inicio</a>
-      <a href="/quienes-somos" class="py-2 text-hueso hover:text-beige">Quiénes Somos</a>
-      <a href="/servicios" class="py-2 text-hueso hover:text-beige">Servicios</a>
-      <a href="/contacto" class="py-2 text-hueso hover:text-beige">Contacto</a>
+  <div id="mobileMenu" class="md:hidden hidden border-t border-hueso/20 bg-azulAereo">
+    <!-- Selector idioma (mobile) -->
+    <div class="px-4 py-2 flex items-center gap-3 text-[11px] tracking-[0.22em] uppercase">
+      <a
+        href={hrefForLang("es")}
+        onclick="try{localStorage.setItem('lang','es')}catch{}"
+        class={`${lang === 'es' ? 'text-beige underline decoration-beige/70 underline-offset-4' : 'text-hueso/90 hover:text-beige/90'} inline-flex items-center gap-2`}
+      >
+        <span class="inline-block h-4 w-6 rounded-sm overflow-hidden ring-1 ring-white/20">
+          <svg viewBox="0 0 3 2" class="h-full w-full">
+            <rect width="3" height="2" fill="#74ACDF" />
+            <rect y="0.66" width="3" height="0.68" fill="#fff" />
+          </svg>
+        </span>
+        ES
+      </a>
+      <span class="text-hueso/40">|</span>
+      <a
+        href={hrefForLang("en")}
+        onclick="try{localStorage.setItem('lang','en')}catch{}"
+        class={`${lang === 'en' ? 'text-beige underline decoration-beige/70 underline-offset-4' : 'text-hueso/90 hover:text-beige/90'} inline-flex items-center gap-2`}
+      >
+        <span class="inline-block h-4 w-6 rounded-sm overflow-hidden ring-1 ring-white/20">
+          <svg viewBox="0 0 7410 3900" class="h-full w-full">
+            <path fill="#b22234" d="M0 0h7410v3900H0z" />
+            <path stroke="#fff" stroke-width="300" d="M0 450h7410M0 1050h7410M0 1650h7410M0 2250h7410M0 2850h7410M0 3450h7410" />
+            <path fill="#3c3b6e" d="M0 0h2964v2100H0z" />
+          </svg>
+        </span>
+        EN
+      </a>
+    </div>
+
+    <nav class="px-4 pb-3 flex flex-col text-[11px] tracking-[0.22em] uppercase">
+      {items.map((it) => (
+        <a href={href(it.rel)} class="py-2 text-hueso hover:text-beige">{it.label}</a>
+      ))}
     </nav>
   </div>
 
@@ -110,5 +165,12 @@ import logo from "../img/Logo_3.png";
     btn?.addEventListener("click", () => {
       menu?.classList.toggle("hidden");
     });
+
+    try {
+      const saved = localStorage.getItem("lang");
+      if (saved && location.pathname === "/") {
+        location.replace(`/${saved}/`);
+      }
+    } catch {}
   </script>
 </header>

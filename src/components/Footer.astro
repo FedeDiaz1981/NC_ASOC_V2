@@ -1,37 +1,71 @@
 ---
-import logo from "../img/Logo_3.png"
+import logo from "../img/Logo_3.png";
+
+// Detecta idioma actual según la ruta
+const currentLang = Astro.url.pathname.startsWith("/en") ? "en" : "es";
+
+// Rutas + textos por idioma
+const T = {
+  es: {
+    home: "/es/",
+    about: "/es/quienes-somos",
+    services: "/es/servicios",
+    contact: "/es/contacto",
+    linksTitle: "Enlaces",
+    contactTitle: "Contacto",
+    rights: "Todos los derechos reservados.",
+    brand: "NUEVA CELINA & ASOCIADOS",
+  },
+  en: {
+    home: "/en/",
+    about: "/en/quienes-somos",
+    services: "/en/servicios",
+    contact: "/en/contacto",
+    linksTitle: "Links",
+    contactTitle: "Contact",
+    rights: "All rights reserved.",
+    brand: "NUEVA CELINA & ASSOCIATES",
+  },
+}[currentLang];
 ---
-<footer class="bg-azulAereo text-hueso text-sm relative z-10 bg-azulAereo text-hueso text-sm">
+
+<footer class="relative z-10 bg-azulAereo text-hueso text-sm">
+  <!-- línea superior -->
   <div class="h-[2px] w-full bg-beige"></div>
-  <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-8">
-    <!-- Logo + lema -->
-    <div class="space-y-5 ">
-      <p class="text-hueso/80 uppercase pt-6">
-        <img src={logo.src} alt="Logo" class="w-auto inline mr-2" /> Villa Celina & Asociados
+
+  <div class="max-w-7xl mx-auto px-4 py-10 grid gap-10 md:gap-8 md:grid-cols-3">
+    <!-- Logo + marca (siempre visible) -->
+    <div class="space-y-4">
+      <p class="flex items-center gap-3 uppercase tracking-wide pt-2">
+        <img src={logo.src} alt="Logo" class="w-10 h-10 object-contain" />
+        <span class="text-hueso/90">{T.brand}</span>
       </p>
     </div>
 
-    <!-- Links -->
-    <div class="hidden md:inline">
-      <h3 class="font-semibold mb-3 text-beige">Enlaces</h3>
+    <!-- Links (sólo desktop) -->
+    <nav class="hidden md:block">
+      <h3 class="font-semibold mb-3 text-beige">{T.linksTitle}</h3>
       <ul class="space-y-2 text-hueso/80">
-        <li><a href="/" class="hover:text-beige transition">Inicio</a></li>
-        <li><a href="/turnos" class="hover:text-beige transition">Turnos</a></li>
-        <li><a href="#contacto" class="hover:text-beige transition">Contactos</a></li>
+        <li><a href={T.home} class="hover:text-beige transition">Inicio</a></li>
+        <li><a href={T.about} class="hover:text-beige transition">Quiénes Somos</a></li>
+        <li><a href={T.services} class="hover:text-beige transition">Servicios</a></li>
+        <li><a href={T.contact} class="hover:text-beige transition">Contacto</a></li>
       </ul>
-    </div>
+    </nav>
 
-    <!-- Contacto -->
+    <!-- Contacto (siempre visible) -->
     <div>
-      <h3 class="font-semibold mb-3 text-beige">Contacto</h3>
-      <p class="text-hueso/80">Tel: +54 11 3023-6775</p>
-      <p class="text-hueso/80">Email: estudionuevacelina@gmail.com</p>
-      <p class="text-hueso/80">​General pintos 2830, Villa Celina, Bs. As. Argentina</p>
+      <h3 class="font-semibold mb-3 text-beige">{T.contactTitle}</h3>
+      <address class="not-italic space-y-1 text-hueso/80">
+        <p>Tel: +54 11 3023-6775</p>
+        <p>Email: estudionuevacelina@gmail.com</p>
+        <p>General Pintos 2830, Villa Celina, Bs. As. Argentina</p>
+      </address>
     </div>
   </div>
 
-  <!-- Bottom bar -->
+  <!-- barra inferior -->
   <div class="border-t border-hueso/20 py-4 text-center text-hueso/60">
-    © {new Date().getFullYear()} Nueva CelinaS & Asociados. Todos los derechos reservados.
+    © {new Date().getFullYear()} Nueva Celina & Asociados. {T.rights}
   </div>
 </footer>

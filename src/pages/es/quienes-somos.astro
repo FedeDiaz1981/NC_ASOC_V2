@@ -1,7 +1,14 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
-import QuienesSomos_2 from "../components/Quienes_somos.astro";
-import bg_image from "../img/Fondo.jpg"
+// src/pages/[lang]/quienes-somos.astro
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import QuienesSomos_2 from "../../components/Quienes_somos.astro";
+import bg_image from "../../img/Fondo.jpg"
+
+const lang = "es";
+
+import img_1 from "../../img/P_01.png";
+import img_2 from "../../img/P_02.png";
+import img_3 from "../../img/P_03.png";
 
 ---
 <BaseLayout title="Estudio Jurídico | Nueva Celina & Asoc.">
@@ -20,27 +27,24 @@ import bg_image from "../img/Fondo.jpg"
   </div>
   
   <QuienesSomos_2
-        headline="FROIMOVICI & ASOCIADOS"
-        introHtml={`<p><strong>Froimovici & Asociados</strong> es un Estudio Jurídico único en su clase, orientado a brindar soluciones integrales con integridad y excelencia.</p><p>Trabajamos junto a cada cliente con honestidad y profesionalismo.</p>`}
-        ctaText="Turno"
-        ctaHref="/quienes-somos"
+        lang={lang}
         members={[
           {
             name: "María Pérez",
-            role: "Abogada",
-            photo: "/images/persona1.png",
+            role: "Asistente Legal",
+            photo: img_1.src,
             tagline: "Derecho Civil",
           },
           {
             name: "Lucía Gómez",
             role: "Abogada",
-            photo: "/images/persona2.png",
+            photo: img_2.src,
             tagline: "Comercial",
           },
           {
             name: "Ana López",
             role: "Abogada",
-            photo: "/images/persona3.png",
+            photo: img_3.src,
             tagline: "Familia",
           },
         ]}

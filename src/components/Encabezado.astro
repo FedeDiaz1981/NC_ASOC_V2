@@ -1,35 +1,74 @@
 ---
+/**
+ * Encabezado.astro — i18n + fallbacks + overrides por props
+ * Lee textos desde dictionaries[lang].home.hero
+ * Props opcionales pisan al diccionario
+ */
+
+import { dictionaries, type Locale } from "../i18n";
+
+type ImgLike = string | { src: string };
+
 interface Props {
+  lang?: Locale;
+
+  // overrides de texto (opcionales)
   pretitle?: string;
   title?: string;
-  lemaStrong?: string;
-  lema?: string;
-  bgImage?: string;      // ruta en /public (ej: /images/hero.webp)
-  logo?: string;
-  heightClass?: string;  // ej: "min-h-[72vh] md:min-h-[78vh] lg:min-h-[86vh]"
-  overlay?: string;      // ej: "bg-azulProfundo/80"
-  offsetTop?: string;    // ej: "top-[64px]" si el header es sticky
+  lemaStrong?: string; // hero.motto1
+  lema?: string;       // hero.motto2
+
+  // visual
+  bgImage?: ImgLike;     // "/images/hero.jpg" o importado -> {src}
+  logo?: ImgLike;        // idem
+  heightClass?: string;  // "min-h-[72vh] md:min-h-[78vh] lg:min-h-[86vh]"
+  overlay?: string;      // "bg-azulProfundo/80"
+  offsetTop?: string;    // "top-[64px]" si header sticky
+  brandAlt?: string;     // alt para logo (fallback al brand)
 }
 
 const {
-  pretitle = "ESTUDIO JURÍDICO",
-  title = "FROIMOVICI & ASOCIADOS",
-  lemaStrong = "PARA ANUNCIAR QUE JEHOVÁ MI FORTALEZA ES RECTO,",
-  lema = "Y QUE EN ÉL NO HAY INJUSTICIA",
+  lang = "es",
+
+  // visual defaults
   bgImage = "/images/hero.jpg",
   logo = "/images/logo-dorado.svg",
   heightClass = "min-h-[72vh] md:min-h-[78vh] lg:min-h-[86vh]",
   overlay = "bg-azulProfundo/80",
   offsetTop = "top-0",
+  brandAlt,
 } = Astro.props as Props;
+
+// Diccionario
+const d = dictionaries[lang] ?? {};
+const hero = d.home?.hero ?? {};
+const brand = d.common?.brand ?? "Logo";
+
+// Textos (props override)
+const pretitle = Astro.props.pretitle   ?? hero.pretitle ?? "ESTUDIO JURÍDICO";
+const title    = Astro.props.title      ?? hero.title    ?? "FROIMOVICI & ASOCIADOS";
+const lemaStrong = Astro.props.lemaStrong ?? hero.motto1 ?? "";
+const lema       = Astro.props.lema       ?? hero.motto2 ?? "";
+
+// Normalizar rutas de imagen (acepta string o import)
+const srcOf = (img: ImgLike) => (typeof img === "string" ? img : img?.src ?? "");
+const bgSrc   = srcOf(bgImage);
+const logoSrc = srcOf(logo);
+
+// Alt del logo
+const logoAlt = Astro.props.brandAlt ?? brand;
 ---
 
-<section class={`relative isolate ${heightClass} flex items-center justify-center text-hueso overflow-hidden`} aria-label="Encabezado del sitio">
-  <!-- Fondo fijo detrás (robusto en iOS) -->
-  <div aria-hidden="true"
-       class={`fixed left-0 right-0 ${offsetTop} bottom-0 -z-10 bg-center bg-cover bg-no-repeat`}
-       style={`background-image:url('${bgImage}');`}>
-  </div>
+<section
+  class={`relative isolate ${heightClass} flex items-center justify-center text-hueso overflow-hidden`}
+  aria-label={lang === "en" ? "Site header" : "Encabezado del sitio"}
+>
+  <!-- Fondo fijo detrás (robusto también en iOS) -->
+  <div
+    aria-hidden="true"
+    class={`fixed left-0 right-0 ${offsetTop} bottom-0 -z-10 bg-center bg-cover bg-no-repeat`}
+    style={`background-image:url('${bgSrc}');`}
+  ></div>
 
   <!-- Capa de oscurecimiento para legibilidad -->
   <div class={`fixed left-0 right-0 ${offsetTop} bottom-0 -z-10 ${overlay}`}></div>
@@ -42,30 +81,51 @@ const {
 
   <!-- Contenido centrado -->
   <div class="relative z-10 w-full max-w-6xl px-4 md:px-6 text-center">
-    <p class="text-[16px] sm:text-sm md:text-2xl tracking-[0.25em] uppercase text-hueso/90 after:content-[''] after:block after:h-[2px] after:w-28 after:bg-beige after:mx-auto after:mt-2">
-      {pretitle}
-    </p>
+    {pretitle && (
+      <p
+        class="text-[16px] sm:text-sm md:text-2xl tracking-[0.25em] uppercase text-hueso/90
+               after:content-[''] after:block after:h-[2px] after:w-28 after:bg-beige after:mx-auto after:mt-2"
+      >
+        {pretitle}
+      </p>
+    )}
 
-    <h1 class="mt-5 text-3xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide drop-shadow-[0_1px_0_rgba(0,0,0,0.25)]">
+    <h1
+      class="mt-5 text-3xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold tracking-wide
+             drop-shadow-[0_1px_0_rgba(0,0,0,0.25)]"
+    >
       {title}
     </h1>
 
-    {logo && (
+    {logoSrc && (
       <div class="mt-8 md:mt-[20%]">
-        <img src={logo} alt="Emblema" class="mx-auto h-16 sm:h-22 md:h-[7rem] w-auto rounded-xl md:rounded-3xl border-4 border-[#3e5f73] shadow-sm" />
+        <img
+          src={logoSrc}
+          alt={logoAlt}
+          class="mx-auto h-16 sm:h-22 md:h-[7rem] w-auto rounded-xl md:rounded-3xl
+                 border-4 border-[#3e5f73] shadow-sm"
+          loading="eager"
+          decoding="async"
+        />
       </div>
     )}
 
-    <div class="mt-6 md:mt-8">
-      <p class="text-[15px] sm:text-sm md:text-xl font-semibold tracking-wide">
-        {lemaStrong}
-      </p>
-      <p class="mt-1 text-[13px] sm:text-sm md:text-xl text-hueso/90">
-        {lema}
-      </p>
-    </div>
+    {(lemaStrong || lema) && (
+      <div class="mt-6 md:mt-8">
+        {lemaStrong && (
+          <p class="text-[15px] sm:text-sm md:text-xl font-semibold tracking-wide">
+            {lemaStrong}
+          </p>
+        )}
+        {lema && (
+          <p class="mt-1 text-[13px] sm:text-sm md:text-xl text-hueso/90">
+            {lema}
+          </p>
+        )}
+      </div>
+    )}
 
-    <div class="mt-8 md:mt-10">
+    <div class="mt-8 mb-4 md:mt-10">
       <slot />
     </div>
   </div>

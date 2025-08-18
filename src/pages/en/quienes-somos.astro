@@ -1,0 +1,71 @@
+---
+// src/pages/[lang]/quienes-somos.astro
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import QuienesSomos_2 from "../../components/Quienes_somos.astro";
+import bg_image from "../../img/Fondo.jpg";
+
+const lang = "en";
+
+import img_1 from "../../img/P_01.png";
+import img_2 from "../../img/P_02.png";
+import img_3 from "../../img/P_03.png";
+---
+
+<BaseLayout title="Estudio Jurídico | Nueva Celina & Asoc.">
+  <!-- Fondo fijo responsive (robusto en iOS) -->
+  <picture aria-hidden="true" class="pointer-events-none">
+    <img
+      src={bg_image.src}
+      alt=""
+      class="fixed inset-0 -z-10 w-full h-[120vh] md:h-screen object-cover
+           object-[50%_35%] md:object-center"
+      loading="eager"
+      decoding="async"
+      fetchpriority="high"
+      style="
+      transform: translateZ(0);
+      will-change: transform;
+      backface-visibility: hidden;
+    "
+    />
+  </picture>
+
+  <!-- Capa de oscurecimiento para legibilidad -->
+  <div class="fixed inset-0 -z-10 bg-azulProfundo/80"></div>
+
+  <!-- Viñetas / degradados sutiles -->
+  <div class="pointer-events-none absolute inset-0 -z-0">
+    <div
+      class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/20 to-transparent"
+    >
+    </div>
+    <div
+      class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent"
+    >
+    </div>
+  </div>
+
+  <QuienesSomos_2
+    lang={lang}
+    members={[
+      {
+        name: "María Pérez",
+        role: "Legal assistant",
+        photo: img_1.src,
+        tagline: "Derecho Civil",
+      },
+      {
+        name: "Lucía Gómez",
+        role: "Attorney",
+        photo: img_2.src,
+        tagline: "Comercial",
+      },
+      {
+        name: "Ana López",
+        role: "Attorney",
+        photo: img_3.src,
+        tagline: "Familia",
+      },
+    ]}
+  />
+</BaseLayout>

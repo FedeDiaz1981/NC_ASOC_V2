@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+//@ts-ignore
+import Turnos from "../../components/Turnos.astro";
+import bg_image from "../../img/Fondo.jpg";
+
+const lang = "es";
+---
+
+<BaseLayout title="Estudio Jurídico | Nueva Celina & Asoc." lang={lang}>
+  <!-- Fondo fijo detrás (robusto en iOS) -->
+  <div aria-hidden="true"
+       class="fixed inset-0 -z-10 bg-center bg-cover bg-no-repeat"
+       style={`background-image:url('${bg_image.src}');`}></div>
+
+  <!-- Capa de oscurecimiento para legibilidad -->
+  <div class="fixed inset-0 -z-10 bg-azulProfundo/80"></div>
+
+  <!-- Viñetas / degradados sutiles (opcional) -->
+  <div class="pointer-events-none absolute inset-0 z-0">
+    <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/20 to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent"></div>
+  </div>
+
+  <Turnos lang={lang} />
+</BaseLayout>

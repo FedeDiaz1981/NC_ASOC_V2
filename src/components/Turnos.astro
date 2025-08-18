@@ -1,0 +1,167 @@
+---
+/**
+ * Turnos.astro — Cards responsive (i18n + fallbacks)
+ * Lee textos desde dictionaries[lang].turns
+ * Permite overrides por props: options (cards), heading, subheading
+ */
+
+import { dictionaries, type Locale } from "../i18n";
+// (opcional) si tenés helper para prefijar /en/ etc.:
+import { lnk } from "../i18n/routing";
+
+import img_pres from "../img/consulta_en_estudio.png";
+import img_virt from "../img/reunion_virtual.png";
+
+type Option = {
+  key?: string;
+  title: string;
+  desc: string;
+  duration?: string;        // ej: "1 h"
+  price?: string;           // ej: "$ 45.000" o "Los precios varían"
+  href?: string;            // link a reserva
+  img?: string;             // imagen top
+};
+
+interface Props {
+  lang?: Locale;
+  heading?: string;
+  subheading?: string;
+  options?: Option[];
+}
+
+const { lang = "es" } = Astro.props as Props;
+const dict = dictionaries[lang];
+
+// 1) Diccionario (con fallbacks)
+const t = dict.turns ?? {
+  heading: "Pedir turno",
+  subheading:
+    "Elegí la opción que mejor se adecúe a tu disponibilidad para conocernos y evaluar tus necesidades.",
+  bookNow: "Reservar ahora",
+  cards: [
+    {
+      key: "virtual",
+      title: "Consulta Virtual",
+      desc: "Conectémonos rápido para solucionar tus problemas legales.",
+      duration: "1 h",
+      price: "$ 45.000",
+      href: "/turnos/virtual",
+      img: img_virt.src,
+    },
+    {
+      key: "office",
+      title: "Consulta en Estudio",
+      desc: "Evaluemos la manera perfecta de abogar por vos.",
+      duration: "1 h",
+      price: "$ 45.000",
+      href: "/turnos/estudio",
+      img: img_pres.src,
+    },
+  ],
+};
+
+// 2) Overrides por props (opciones y encabezados)
+const heading = Astro.props.heading ?? t.heading;
+const subheading = Astro.props.subheading ?? t.subheading;
+
+// Si te pasan props.options usamos eso, sino lo del diccionario
+const rawOptions = (Astro.props.options ?? t.cards) as Option[];
+
+// 3) Normalizamos links con lnk(lang, ...) si existe
+const options: Option[] = rawOptions.map((o) => ({
+  ...o,
+  href:
+    o.href && typeof lnk === "function"
+      ? lnk(lang, o.href)
+      : o.href ?? "#",
+}));
+---
+
+<section class="relative isolate py-14">
+  <!-- Overlay para tapar el fondo global -->
+  <div class="absolute inset-0 z-0 bg-hueso/95"></div>
+
+  <div class="relative z-10 max-w-3xl mx-auto px-4">
+    <!-- Encabezado -->
+    <header class="text-center mb-10">
+      <h2 class="text-azulProfundo text-2xl sm:text-3xl font-bold tracking-wide uppercase">
+        {heading}
+      </h2>
+      {subheading && (
+        <p class="mt-3 text-azulProfundo/80 max-w-2xl mx-auto">
+          {subheading}
+        </p>
+      )}
+      <div class="mx-auto mt-4 h-[2px] w-28 bg-beige"></div>
+    </header>
+
+    <!-- Grilla de cards -->
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-2">
+      {options.map((c, i) => (
+        <article
+          class="bg-hueso rounded-2xl overflow-hidden shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-azulAereo/15 flex flex-col"
+          data-aos="fade-up"
+          data-aos-delay={String(i * 120)}
+        >
+          {/* Imagen top (opcional) */}
+          {c.img ? (
+            <img
+              src={c.img}
+              alt={c.title}
+              class="h-52 w-full object-cover"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <div class="h-12 w-full bg-azulAereo/15"></div>
+          )}
+
+          {/* Contenido */}
+          <div class="p-6 flex-1 flex flex-col">
+            <h3 class="text-azulProfundo text-2xl font-semibold">
+              {c.title}
+            </h3>
+            <p class="mt-3 text-azulProfundo/80 leading-relaxed">
+              {c.desc}
+            </p>
+
+            <hr class="my-5 border-azulAereo/15" />
+
+            <div class="text-sm text-azulProfundo/80 grid grid-cols-2 gap-2">
+              {c.duration ? (
+                <div>
+                  <span class="block font-semibold text-azulProfundo">{
+                    // breve etiqueta; si querés traducirla agregala al dict
+                    lang === "en" ? "Duration" : "Duración"
+                  }</span>
+                  <span>{c.duration}</span>
+                </div>
+              ) : null}
+              {c.price ? (
+                <div>
+                  <span class="block font-semibold text-azulProfundo">{
+                    lang === "en" ? "Price" : "Precio"
+                  }</span>
+                  <span>{c.price}</span>
+                </div>
+              ) : null}
+            </div>
+
+            {/* CTA */}
+            {c.href && (
+              <div class="pt-6">
+                <a
+                  href={c.href}
+                  class="inline-flex items-center justify-center rounded-full bg-azulAereo text-hueso px-5 py-2 font-semibold
+                         hover:bg-beige hover:text-azulProfundo transition-colors"
+                >
+                  {t.bookNow ?? (lang === "en" ? "Book now" : "Reservar ahora")}
+                </a>
+              </div>
+            )}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

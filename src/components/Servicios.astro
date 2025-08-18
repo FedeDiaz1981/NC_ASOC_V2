@@ -1,27 +1,43 @@
 ---
-import { dictionaries, lnk, type Locale } from '../i18n';
+import { dictionaries, type Locale } from '../i18n';
+// import { lnk } from "../i18n/routing"; // ya no lo usamos
 
 interface Props { lang?: Locale }
-const { lang = 'es' } = Astro.props as Props;
+const { lang = 'es' } = Astro.props;
 
-// Diccionario de servicios según idioma
 const dict = dictionaries[lang].services;
 
-// Fallback por si aún no agregaste los textos de pie en el diccionario
-const footer1 =
-  dict.footer1 ??
-  'Contamos con gestoría para informes de dominio, informes de cesión e inhibición, cédula catastral, valuación fiscal y valuación inmobiliaria ARBA.';
-const footer2 =
-  dict.footer2 ??
-  'También con ingeniero civil para todo lo relevante a Agrimensura, Estados Parcelarios, planos de obra y planos de subdivisión.';
----
+// Helpers de pie (igual que antes)
+const footer1Html =
+  (dict as any).footer1Html
+    ? (dict as any).footer1Html
+    : (() => {
+        if (lang === 'es') {
+          return (dict.footer1 ??
+            'Contamos con gestoría para informes de dominio, informes de cesión e inhibición, cédula catastral, valuación fiscal y valuación inmobiliaria ARBA.'
+          )
+            .replace('cesión', '<span class="underline">cesión</span>')
+            .replace('cédula catastral', '<span class="underline">cédula catastral</span>');
+        }
+        return dict.footer1 ?? '';
+      })();
+
+const footer2Html =
+  (dict as any).footer2Html
+    ? (dict as any).footer2Html
+    : (dict.footer2 ??
+        (lang === 'es'
+          ? 'También con ingeniero civil para todo lo relevante a Agrimensura, Estados Parcelarios, planos de obra y planos de subdivisión.'
+          : '')
+      );
+--->
 
 <section class="relative isolate py-16">
-  <!-- Fondo de la sección para tapar la imagen global -->
+  <!-- Fondo sólido que tapa la imagen global -->
   <div class="absolute inset-0 z-0 bg-[#1f3c4c]"></div>
 
   <div class="relative z-10 max-w-7xl mx-auto px-4">
-    <!-- Bloque: Servicios Generales -->
+    <!-- Servicios Generales -->
     <header class="text-center mb-8">
       <h2 class="uppercase tracking-[0.18em] text-hueso text-xl sm:text-2xl">
         {dict.heading_general}
@@ -31,24 +47,28 @@ const footer2 =
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
       {dict.general.map((s, i) => (
-        <a
-          href={lnk(lang, s.href)}
-          class={`group relative flex items-center justify-center text-center p-7 h-44 rounded-xl shadow-sm
+        <button
+          type="button"
+          aria-label={s.title}
+          class={`group relative w-full flex items-center justify-center text-center p-7 h-44 rounded-xl shadow-sm
                   transform transition-all duration-300 ease-out hover:scale-105 hover:-translate-y-1
-                  border ${
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-beige
+                  border cursor-default
+                  ${
+                    // base = A   hover = B  (invertimos)
                     i % 2 === 0
-                      ? "bg-hueso text-azulAereo border-transparent hover:border-azulAereo/30"
-                      : "bg-azulAereo text-hueso border-hueso hover:border-hueso/80"
+                      ? "bg-hueso text-azulAereo border-transparent hover:bg-[#cfa784] hover:text-azulAereo hover:border-hueso/80"
+                      : "bg-azulAereo text-hueso border-hueso hover:bg-[#cfa784] hover:text-azulAereo hover:border-azulAereo/30"
                   }`}
         >
           <h3 class="text-lg font-semibold tracking-wide uppercase transition-all duration-300 group-hover:text-xl">
             {s.title}
           </h3>
-        </a>
+        </button>
       ))}
     </div>
 
-    <!-- Bloque: Servicios Especializados -->
+    <!-- Servicios Especializados -->
     <header class="text-center mt-16 mb-6">
       <h2 class="uppercase tracking-[0.18em] text-hueso text-xl sm:text-2xl">
         {dict.heading_special}
@@ -61,28 +81,31 @@ const footer2 =
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
       {dict.special.map((s, i) => (
-        <a
-          href={lnk(lang, s.href)}
-          class={`group relative flex items-center justify-center text-center px-7 py-9 h-50 rounded-xl shadow-sm
+        <button
+          type="button"
+          aria-label={s.title}
+          class={`group relative w-full flex items-center justify-center text-center px-7 py-9 h-50 rounded-xl shadow-sm
                   transform transition-all duration-300 ease-out hover:scale-105 hover:-translate-y-1
-                  border ${
+                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-beige
+                  border cursor-default
+                  ${
                     i % 2 === 0
-                      ? "bg-azulAereo text-hueso border-hueso hover:border-hueso/80"
-                      : "bg-hueso text-azulAereo border-transparent hover:border-azulAereo/30"
+                      ? "bg-azulAereo text-hueso border-hueso hover:bg-[#cfa784] hover:text-azulAereo hover:border-azulAereo/30"
+                      : "bg-hueso text-azulAereo border-transparent hover:bg-[#cfa784] hover:text-azulAereo hover:border-hueso/80"
                   }`}
         >
           <h3 class="text-lg font-semibold tracking-wide uppercase transition-all duration-300 group-hover:text-xl">
             {s.title}
           </h3>
-        </a>
+        </button>
       ))}
     </div>
 
-    <!-- Textos al pie -->
-    <div class="mt-8 text-center text-hueso/85 text-base space-y-2">
-      <p set:html={footer1.replace('cesión', '<span class="underline">cesión</span>').replace('cédula catastral', '<span class="underline">cédula catastral</span>')}>
-      </p>
-      <p>{footer2}</p>
-    </div>
+    {(footer1Html || footer2Html) && (
+      <div class="mt-8 text-center text-hueso/85 text-base space-y-2">
+        {footer1Html ? <p set:html={footer1Html}></p> : null}
+        {footer2Html ? <p set:html={footer2Html}></p> : null}
+      </div>
+    )}
   </div>
 </section>
