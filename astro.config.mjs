@@ -11,7 +11,7 @@ export default defineConfig({
       prefixDefaultLocale: false,
     },
   },
-    output: 'server',
-  adapter: node({ mode: 'standalone' }), // empaqueta server listo
-  server: { port: 3000, host: true },
+  //   output: 'server',
+  // adapter: node({ mode: 'standalone' }), // empaqueta server listo
+  // server: { port: 3000, host: true },
 });
