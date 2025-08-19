@@ -1,32 +1,25 @@
 ---
 import logo from "../img/Logo_3.png";
+import { dictionaries, type Locale } from "../i18n";
 
-// Detecta idioma actual según la ruta
-const currentLang = Astro.url.pathname.startsWith("/en") ? "en" : "es";
+// Idioma por prefijo de ruta
+const pathname = Astro.url.pathname;
+const first = pathname.split("/")[1];
+const lang: Locale = (first === "en" ? "en" : "es") as Locale;
+const prefix = `/${lang}`;
 
-// Rutas + textos por idioma
-const T = {
-  es: {
-    home: "/es/",
-    about: "/es/quienes-somos",
-    services: "/es/servicios",
-    contact: "/es/contacto",
-    linksTitle: "Enlaces",
-    contactTitle: "Contacto",
-    rights: "Todos los derechos reservados.",
-    brand: "NUEVA CELINA & ASOCIADOS",
-  },
-  en: {
-    home: "/en/",
-    about: "/en/quienes-somos",
-    services: "/en/servicios",
-    contact: "/en/contacto",
-    linksTitle: "Links",
-    contactTitle: "Contact",
-    rights: "All rights reserved.",
-    brand: "NUEVA CELINA & ASSOCIATES",
-  },
-}[currentLang];
+// Diccionario
+const d = dictionaries[lang];
+
+// Labels con fallbacks
+const brand        = d.common?.brand ?? "Nueva Celina & Asociados";
+const navLabels    = d.common?.nav ?? { home: "Inicio", services: "Servicios", turns: "Turnos", contact: "Contacto", about: "Quiénes Somos" };
+const linksTitle   = (d as any)?.footer?.linksTitle ?? (lang === "en" ? "Links" : "Enlaces");
+const contactTitle = (d as any)?.footer?.contactTitle ?? navLabels.contact ?? (lang === "en" ? "Contact" : "Contacto");
+const rightsText   = (d as any)?.footer?.rights ?? (lang === "en" ? "All rights reserved." : "Todos los derechos reservados.");
+
+// Helpers de rutas localizadas
+const href = (rel: string = "") => (rel ? `${prefix}/${rel}` : `${prefix}/`);
 ---
 
 <footer class="relative z-10 bg-azulAereo text-hueso text-sm">
@@ -34,28 +27,29 @@ const T = {
   <div class="h-[2px] w-full bg-beige"></div>
 
   <div class="max-w-7xl mx-auto px-4 py-10 grid gap-10 md:gap-8 md:grid-cols-3">
-    <!-- Logo + marca (siempre visible) -->
+    <!-- Logo + marca -->
     <div class="space-y-4">
       <p class="flex items-center gap-3 uppercase tracking-wide pt-2">
-        <img src={logo.src} alt="Logo" class="w-10 h-10 object-contain" />
-        <span class="text-hueso/90">{T.brand}</span>
+        <img src={logo.src} alt={brand} class="w-10 h-10 object-contain" />
+        <span class="text-hueso/90">{brand}</span>
       </p>
     </div>
 
     <!-- Links (sólo desktop) -->
     <nav class="hidden md:block">
-      <h3 class="font-semibold mb-3 text-beige">{T.linksTitle}</h3>
+      <h3 class="font-semibold mb-3 text-beige">{linksTitle}</h3>
       <ul class="space-y-2 text-hueso/80">
-        <li><a href={T.home} class="hover:text-beige transition">Inicio</a></li>
-        <li><a href={T.about} class="hover:text-beige transition">Quiénes Somos</a></li>
-        <li><a href={T.services} class="hover:text-beige transition">Servicios</a></li>
-        <li><a href={T.contact} class="hover:text-beige transition">Contacto</a></li>
+        <li><a href={href()} class="hover:text-beige transition">{navLabels.home ?? (lang === "en" ? "Home" : "Inicio")}</a></li>
+        <li><a href={href("quienes-somos")} class="hover:text-beige transition">{navLabels.about ?? (lang === "en" ? "About" : "Quiénes Somos")}</a></li>
+        <li><a href={href("servicios")} class="hover:text-beige transition">{navLabels.services ?? (lang === "en" ? "Services" : "Servicios")}</a></li>
+        <li><a href={href("turnos")} class="hover:text-beige transition">{navLabels.turns ?? (lang === "en" ? "Appointments" : "Turnos")}</a></li>
+        <li><a href={href("contacto")} class="hover:text-beige transition">{navLabels.contact ?? (lang === "en" ? "Contact" : "Contacto")}</a></li>
       </ul>
     </nav>
 
-    <!-- Contacto (siempre visible) -->
+    <!-- Contacto -->
     <div>
-      <h3 class="font-semibold mb-3 text-beige">{T.contactTitle}</h3>
+      <h3 class="font-semibold mb-3 text-beige">{contactTitle}</h3>
       <address class="not-italic space-y-1 text-hueso/80">
         <p>Tel: +54 11 3023-6775</p>
         <p>Email: estudionuevacelina@gmail.com</p>
@@ -66,6 +60,6 @@ const T = {
 
   <!-- barra inferior -->
   <div class="border-t border-hueso/20 py-4 text-center text-hueso/60">
-    © {new Date().getFullYear()} Nueva Celina & Asociados. {T.rights}
+    © {new Date().getFullYear()} {brand}. {rightsText}
   </div>
 </footer>

@@ -8,26 +8,28 @@ import Footer from "../components/Footer.astro";
 import logo from "../img/Logo.png";
 import logoRedondo from "../img/Logo_3.png";
 import fondo from "../img/Fondo.jpg";
+import fondo_lg from "../img/Fondo_vacio.png";
+
 
 /** Props: title y lang (idioma actual) */
 interface Props {
   title?: string;
-  lang?: 'es' | 'en';
+  lang?: "es" | "en";
 }
-const { title = "Sitio", lang = 'es' } = Astro.props as Props;
+const { title = "Sitio", lang = "es" } = Astro.props as Props;
 
 /** Rutas actuales/alternas para hreflang */
 const path = Astro.url.pathname;
 // ruta actual normalizada
 const current =
-  lang === 'en'
-    ? '/en' + (path === '/' ? '' : path.replace(/^\/en/, ''))
-    : path.replace(/^\/en/, '') || '/';
+  lang === "en"
+    ? "/en" + (path === "/" ? "" : path.replace(/^\/en/, ""))
+    : path.replace(/^\/en/, "") || "/";
 // ruta alternativa (el otro idioma)
 const alt =
-  lang === 'en'
-    ? path.replace(/^\/en/, '') || '/'
-    : '/en' + (path === '/' ? '' : path);
+  lang === "en"
+    ? path.replace(/^\/en/, "") || "/"
+    : "/en" + (path === "/" ? "" : path);
 ---
 
 <html lang={lang}>
@@ -40,24 +42,63 @@ const alt =
 
     <!-- SEO: versiones alternas por idioma -->
     <link rel="alternate" href={current} hreflang={lang} />
-    <link rel="alternate" href={alt} hreflang={lang === 'en' ? 'es' : 'en'} />
+    <link rel="alternate" href={alt} hreflang={lang === "en" ? "es" : "en"} />
     <link rel="alternate" href={current} hreflang="x-default" />
 
     <!-- AOS init -->
     <script is:inline>
       import AOS from "aos";
       document.addEventListener("astro:page-load", () => {
-        AOS.init({ duration: 700, easing: "ease-out-quart", once: true, offset: 80 });
+        AOS.init({
+          duration: 700,
+          easing: "ease-out-quart",
+          once: true,
+          offset: 80,
+        });
       });
     </script>
   </head>
 
   <body class="flex flex-col min-h-screen bg-white text-slate-900">
-    
     <Header lang={lang} />
 
     <main class="flex-1">
-      <slot />
+      <section
+        class="relative min-h-[100vh] supports-[min-height:100svh]:min-h-[100svh]"
+      >
+        <!-- Fondo (mismo comportamiento en todas las vistas) -->
+        <div
+          aria-hidden="true"
+          class="hidden lg:inline fixed inset-0 -z-10 bg-no-repeat bg-cover bg-center"
+          style={`background-image:url('${fondo.src}');`}
+        >
+        </div>
+
+        <!-- Fondo (mismo comportamiento en todas las vistas) -->
+        <div
+          aria-hidden="true"
+          class="inline  lg:hidden fixed inset-0 -z-10 bg-no-repeat bg-cover bg-center"
+          style={`background-image:url('${fondo_lg.src}');`}
+        >
+        </div>
+
+        <!-- Capa de oscurecimiento -->
+        <div class="fixed inset-0 -z-10 bg-azulProfundo/80"></div>
+
+        <!-- Viñetas / degradados sutiles -->
+        <div class="pointer-events-none absolute inset-0 -z-0">
+          <div
+            class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/20 to-transparent"
+          >
+          </div>
+          <div
+            class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent"
+          >
+          </div>
+        </div>
+        <!-- Tu contenido -->
+        <slot />
+      </section>
     </main>
 
     <Footer lang={lang} />

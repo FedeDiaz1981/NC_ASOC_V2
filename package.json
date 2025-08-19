@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "aos": "^2.3.4",
-    "astro": "^5.13.2"
+    "astro": "^5.13.2",
+    "nodemailer": "^7.0.5"
   },
   "devDependencies": {
     "@astrojs/tailwind": "^6.0.2",

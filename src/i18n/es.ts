@@ -26,6 +26,7 @@ export default {
   services: {
     heading_general: 'Nuestros Servicios Generales',
     heading_special: 'Nuestros Servicios Especializados',
+    subtitle:'Te gestionamos y acompañamos durante todo el proceso de:',
     general: [
       { key: 'civil',          title: 'Derecho Civil', href: '#' },
       { key: 'inmobiliario',   title: 'Derecho Inmobiliario', href: '#' },
@@ -62,7 +63,7 @@ export default {
   bookOnline: "¡Agendá un turno online!",
   bookOnlineDesc: "Elegí la opción que mejor se adecúe a tu disponibilidad de tiempo para conocernos y evaluar tus necesidades.",
   bookMe: "Agendarme",
-
+  urlAppointments:"/es/turnos",
   formLead: "Dejanos tus datos personales y en breve nos pondremos en contacto con vos.",
   labels: {
     name: "Nombre",
@@ -86,7 +87,7 @@ about: {
     introHtml:
       "<p><strong>Nueva Celina & Asociados</strong> es un estudio único en su clase, nuestro principal objetivo es servir a la comunidad, brindándole a nuestros clientes un acompañamiento integral, tanto en lo jurídico como en lo personal y, buscando soluciones a sus problemas, sean estos sencillos o complejos.</p>",
     ctaText: "Reservar turno",
-    ctaHref: "/turnos",
+    ctaHref: "/es/turnos",
     members: [
       { name: "María Pérez", role: "Asistente Legal", photo: "/images/persona1.png", tagline: "Derecho Civil" },
       { name: "Lucía Gómez", role: "Abogada", photo: "/images/persona2.png", tagline: "Comercial" },
@@ -105,7 +106,7 @@ turns: {
       desc: "Conectémonos rápido para solucionar tus problemas legales.",
       duration: "1 h",
       price: "USD 30 o equivalente en peso según cotización del día",
-      href: "/turnos/virtual",
+      href: "https://calendly.com/jesicacoca09/nueva-reunion",
       img: img_virt.src,
     },
     {
@@ -114,7 +115,7 @@ turns: {
       desc: "Evaluemos la manera perfecta de abogar por vos.",
       duration: "1 h",
       price: "USD 30 o equivalente en peso según cotización del día",
-      href: "/turnos/estudio",
+      href: "https://calendly.com/jesicacoca09/30min",
       img: img_pres.src,
     },
   ],

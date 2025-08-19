@@ -22,8 +22,8 @@ const dict = dictionaries[lang].contact;
 // Datos estáticos (podés seguir pasándolos por props si querés)
 const {
   email = "estudionuevacelina@gmail.com",
-  phone = "+54 9 11 3023 6775",
-  phone2 = "+54 9 11 5617 0620",
+  phone = "1130236775",
+  phone2 = "1156170620",
   addressHtml = `General pintos 2830\nVilla Celina\nLa matanza,Bs.As.\nArgentina`,
   whatsapp = [
     { label: "+54 9 11 3023 6775", href: "https://wa.me/5491130236775" },
@@ -45,12 +45,11 @@ const {
 
         <div class="text-azulProfundo/90 space-y-4 text-sm leading-relaxed">
           <p>
-            {dict.leftDescription} <a class="uppercase font-semibold" href="#">{dict.click}</a>
+            {dict.leftDescription} <a class="uppercase font-semibold" href={dict.urlAppointments}>{dict.click}</a>
           </p>
           <p>
             {dict.businessHours}<br />
-            {phone}<br />
-            {phone2}<br />
+            {phone} / {phone2} <br />
             <a class="underline hover:text-azulAereo" href={`mailto:${email}`}>{email}</a>
           </p>
 
@@ -58,11 +57,11 @@ const {
             <p class="font-semibold">{dict.viaWhatsApp}</p>
             <ul class="mt-2 space-y-1">
               {whatsapp.map((w) => (
-                <li>
+                
                   <a class="inline-flex items-center gap-2 text-azulAereo hover:underline" href={w.href} target="_blank" rel="noopener">
                     <span class="i bi-whatsapp"></span>{w.label}
                   </a>
-                </li>
+                
               ))}
             </ul>
           </div>
@@ -182,4 +181,28 @@ const {
       });
     }
   </script>
+</section>
+<section id="mapa" class="relative w-full">
+  <span class="pointer-events-none absolute inset-0 bg-azulProfundo/20"></span>
+  <div class="w-full h-[320px] md:h-[380px] bg-azulProfundo/20">
+    <iframe
+      title="Ubicación - General Pintos 2830, Villa Celina"
+      src="https://www.google.com/maps?q=General+Pintos+2830,+Villa+Celina,+Buenos+Aires,+Argentina&output=embed"
+      loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade"
+      class="w-full h-full border-0"
+      allowfullscreen
+    ></iframe>
+  </div>
+
+  <!-- Enlace de respaldo (visible si por alguna razón no carga el mapa) -->
+  <div class="absolute inset-x-0 bottom-2 text-center">
+    <a
+      href="https://maps.app.goo.gl/ZWrvdeBGo9uNx7hs7"
+      target="_blank" rel="noopener"
+      class="inline-block rounded-full bg-azulAereo/90 text-hueso px-4 py-1 text-xs hover:bg-beige hover:text-azulProfundo transition"
+    >
+      Abrir en Google Maps
+    </a>
+  </div>
 </section>

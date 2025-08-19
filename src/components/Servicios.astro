@@ -57,7 +57,7 @@ const footer2Html =
                   ${
                     // base = A   hover = B  (invertimos)
                     i % 2 === 0
-                      ? "bg-hueso text-azulAereo border-transparent hover:bg-[#cfa784] hover:text-azulAereo hover:border-hueso/80"
+                      ? "bg-[#ebe5d2] text-azulAereo border-transparent hover:bg-[#cfa784] hover:text-azulAereo hover:border-hueso/80"
                       : "bg-azulAereo text-hueso border-hueso hover:bg-[#cfa784] hover:text-azulAereo hover:border-azulAereo/30"
                   }`}
         >
@@ -73,10 +73,11 @@ const footer2Html =
       <h2 class="uppercase tracking-[0.18em] text-hueso text-xl sm:text-2xl">
         {dict.heading_special}
       </h2>
+      <div class="mx-auto mt-3 h-[2px] w-28 bg-beige"></div>
       {dict.subtitle ? (
         <p class="mt-2 text-hueso/80 italic text-base">{dict.subtitle}</p>
       ) : null}
-      <div class="mx-auto mt-3 h-[2px] w-28 bg-beige"></div>
+      
     </header>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -91,7 +92,7 @@ const footer2Html =
                   ${
                     i % 2 === 0
                       ? "bg-azulAereo text-hueso border-hueso hover:bg-[#cfa784] hover:text-azulAereo hover:border-azulAereo/30"
-                      : "bg-hueso text-azulAereo border-transparent hover:bg-[#cfa784] hover:text-azulAereo hover:border-hueso/80"
+                      : "bg-[#ebe5d2] text-azulAereo border-transparent hover:bg-[#cfa784] hover:text-azulAereo hover:border-hueso/80"
                   }`}
         >
           <h3 class="text-lg font-semibold tracking-wide uppercase transition-all duration-300 group-hover:text-xl">

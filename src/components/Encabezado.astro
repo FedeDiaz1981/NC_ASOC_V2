@@ -63,21 +63,6 @@ const logoAlt = Astro.props.brandAlt ?? brand;
   class={`relative isolate ${heightClass} flex items-center justify-center text-hueso overflow-hidden`}
   aria-label={lang === "en" ? "Site header" : "Encabezado del sitio"}
 >
-  <!-- Fondo fijo detrás (robusto también en iOS) -->
-  <div
-    aria-hidden="true"
-    class={`fixed left-0 right-0 ${offsetTop} bottom-0 -z-10 bg-center bg-cover bg-no-repeat`}
-    style={`background-image:url('${bgSrc}');`}
-  ></div>
-
-  <!-- Capa de oscurecimiento para legibilidad -->
-  <div class={`fixed left-0 right-0 ${offsetTop} bottom-0 -z-10 ${overlay}`}></div>
-
-  <!-- Viñetas / degradados sutiles -->
-  <div class="pointer-events-none absolute inset-0 -z-0">
-    <div class="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-black/20 to-transparent"></div>
-    <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/20 to-transparent"></div>
-  </div>
 
   <!-- Contenido centrado -->
   <div class="relative z-10 w-full max-w-6xl px-4 md:px-6 text-center">

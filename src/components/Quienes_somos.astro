@@ -54,9 +54,9 @@ const members: Member[] = propsMembers.length
       tagline: m.tagline,
     }))
   : [
-      { name: "María Pérez", role: "Abogada", photo: img_1.src, tagline: "Derecho Civil" },
-      { name: "Laura Gómez", role: "Abogada", photo: img_2.src, tagline: "Comercial" },
-      { name: "Ana Rodríguez", role: "Abogada", photo: img_3.src, tagline: "Familia" },
+      { name: "María Pérez", role: "Abogada", photo: img_1.src },
+      { name: "Laura Gómez", role: "Abogada", photo: img_2.src},
+      { name: "Ana Rodríguez", role: "Abogada", photo: img_3.src },
     ];
 ---
 
@@ -135,7 +135,7 @@ const members: Member[] = propsMembers.length
                        shadow-[0_0_18px_rgba(190,167,123,0.35)]
                        w-full max-w-xs text-center"
               >
-                {p.name}{p.tagline ? ` — ${p.tagline}` : ""}
+                {p.name}
               </span>
             </figcaption>
           </figure>

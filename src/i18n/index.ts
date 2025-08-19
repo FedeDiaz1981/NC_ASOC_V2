@@ -106,6 +106,7 @@ export type Dictionary = {
     bookOnline: string;
     bookOnlineDesc: string;
     bookMe: string;
+    urlAppointments: string;
 
     formLead: string;
     labels: {

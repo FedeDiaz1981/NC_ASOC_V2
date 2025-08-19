@@ -11,6 +11,7 @@ export default {
         azulAereo: "#3E5F73",
         azulProfundo: "#1F3C4D",
         arena: "#E5D2B8",
+        huesoServicios: "#f5f2e9",
       }
     }
   },

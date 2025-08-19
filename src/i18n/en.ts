@@ -56,7 +56,7 @@ const en = {
     bookOnline: "Book Online",
     bookOnlineDesc: "Schedule your appointment easily and quickly through our online system.",
     bookMe: "Book Now",
-
+    urlAppointments:"/en/turnos",
     rightTitle: "Send Us a Message",
     formLead: "Fill out the form below and we’ll get back to you as soon as possible.",
 
@@ -83,7 +83,7 @@ const en = {
     introHtml:
       "<p><strong>Nueva Celina & Associates</strong> It is a unique firm, our main objective is to serve the community by providing our clients with comprehensive support, both legally and personally, and by seeking solutions to their problems, whether simple or complex.</p>",
     ctaText: "Book an appointment",
-    ctaHref: "/en/turns",
+    ctaHref: "/en/turnos",
     members: [
       { name: "María Pérez", role: "Attorney", photo: "/images/persona1.png", tagline: "Civil Law" },
       { name: "Lucía Gómez", role: "Attorney", photo: "/images/persona2.png", tagline: "Commercial Law" },
@@ -102,7 +102,7 @@ const en = {
       desc: "Let’s connect quickly to address your legal issues.",
       duration: "1 h",
       price: "USD 30 o equivalente en peso según cotización del día",
-      href: "/en/turns/virtual",
+      href: "https://calendly.com/jesicacoca09/nueva-reunion",
       img: img_virt.src,
     },
     {
@@ -111,7 +111,7 @@ const en = {
       desc: "Let’s evaluate the best way to advocate for you.",
       duration: "1 h",
       price: "USD 30 o equivalente en peso según cotización del día",
-      href: "/en/turns/office",
+      href: "https://calendly.com/jesicacoca09/30min",
       img: img_pres.src,
     },
   ],
