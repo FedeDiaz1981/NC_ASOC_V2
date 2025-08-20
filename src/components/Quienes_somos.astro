@@ -15,7 +15,7 @@ import img_3 from "../img/P_03.png";
 
 interface Member {
   name: string;
-  role: string;
+  role?: string;
   photo: string;
   tagline?: string;
 }
@@ -120,7 +120,7 @@ const members: Member[] = propsMembers.length
             />
             <figcaption class="flex flex-col items-center w-full mt-0">
               <span
-                class="inline-block rounded px-3 py-1 text-[11px] uppercase tracking-wide
+                class="hidden rounded px-3 py-1 text-[11px] uppercase tracking-wide
                        text-hueso bg-azulProfundo/90 backdrop-blur-sm
                        ring-1 ring-beige/60
                        shadow-[0_0_14px_rgba(190,167,123,0.35)]
